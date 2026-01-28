@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- ✅ CRITICAL FOR MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Deadlock Detection & Recovery Simulator</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="app-header">
+    <h1>Deadlock Detection & Recovery Simulator</h1>
+    <p>Operating Systems Concept</p>
+
+    <a href="Deadlock.pdf" target="_blank" class="theory-link">
+        📘 Learn Deadlock Theory
+    </a>
+</header>
+
+<!-- ================= SYSTEM CONFIGURATION ================= -->
+<section class="card">
+    <h2>System Configuration</h2>
+
+    <div class="system-config">
+        <div>
+            <label for="processCount">Number of Processes</label>
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="processCount" />
+
+
+        </div>
+
+        <div>
+            <label for="resourceCount">Number of Resources</label>
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="resourceCount" />
+        </div>
+
+        <div>
+            <label for="resourceModel">Resource Model</label>
+            <select id="resourceModel">
+                <option value="single">Single Instance</option>
+                <option value="multiple">Multiple Instance</option>
+            </select>
+        </div>
+
+        <div>
+            <button id="generateBtn">Generate Tables</button>
+        </div>
+    </div>
+</section>
+
+<!-- ================= MATRIX SECTION ================= -->
+<section class="matrix-section">
+
+    <div class="card">
+        <h3>Allocation Matrix</h3>
+       <div class="cell-indicator">
+    Editing: <span class="cellInfo"></span>
+</div>
+
+
+        <div id="allocationMatrix"></div>
+    </div>
+
+    <div class="card">
+        <h3>Request Matrix</h3>
+        <div class="cell-indicator">
+    Editing: <span class="cellInfo"></span>
+</div>
+
+
+        <div id="requestMatrix"></div>
+    </div>
+
+    <div class="card available-resources">
+        <h3>Available Resources</h3>
+      <div class="cell-indicator">
+    Editing: <span class="cellInfo"></span>
+</div>
+
+
+        <div id="availableResources"></div>
+    </div>
+
+</section>
+
+<!-- ================= MAIN ACTIONS ================= -->
+<section class="card actions">
+    <button id="detectBtn">Detect Deadlock</button>
+    <button id="resetBtn">Reset</button>
+    <button id="exampleBtn">Example Input</button>
+</section>
+
+<!-- ================= RESULT PANEL ================= -->
+<section class="card" id="resultPanel">
+    <h3>Detection Result</h3>
+    <p id="resultText">Waiting for input...</p>
+</section>
+
+<!-- ================= GRAPH LEGEND ================= -->
+<div id="graphLegend" class="graph-legend-inline" style="display:none;">
+    <span><i class="legend-dot red"></i> Deadlock</span>
+    <span><i class="legend-dot yellow"></i> Manual Waiting (Preempted)</span>
+    <span><i class="legend-dot orange"></i> Auto Waiting (Resource Shortage)</span>
+    <span><i class="legend-dot blue"></i> Running</span>
+</div>
+
+<!-- ================= GRAPH ================= -->
+<div class="graph-container">
+    <section class="card">
+        <div class="graph-header">
+    <h3 id="graphTitle">Graph</h3>
+
+    <button id="graphFullscreenBtn" class="graph-fullscreen-btn">
+        ⛶ Full Screen
+    </button>
+</div>
+
+
+        <!-- ✅ SCROLL WRAPPER -->
+        <div class="graph-scroll">
+            <div id="graphArea">Graph will appear here</div>
+        </div>
+
+        
+    </section>
+</div>
+
+ <!-- your existing SVG / canvas graph -->
+
+<!-- ================= DEADLOCK RECOVERY ================= -->
+<section class="card deadlock-recovery">
+    <h3>Deadlock Recovery</h3>
+
+    <select id="terminateSelect">
+        <option value="">Select process</option>
+    </select>
+
+    <div class="recovery-actions">
+        <button id="terminateBtn">Terminate Process</button>
+        <button id="preemptBtn">Preemption Process</button>
+    </div>
+
+    <div class="recovery-primary">
+        <a href="https://kapilsingh001.github.io/Bankers-Algorithm-Simulator_3.1/" target="_blank">
+            <button class="nav-btn">
+                🔁 Try Banker's Algorithm (Deadlock Avoidance)
+            </button>
+        </a>
+    </div>
+
+    <div class="recovery-undo">
+        <button id="restoreBtn" type="button">
+            Undo Last Recovery Step
+        </button>
+    </div>
+</section>
+
+<!-- ================= FINAL SYSTEM STATE ================= -->
+<section class="card">
+    <h3>Final System State</h3>
+    <pre id="finalStateText"></pre>
+</section>
+
+<!-- ================= SCRIPT ================= -->
+<script src="./script.js" defer></script>
+
+
+
+<!-- ================= GRAPH FULLSCREEN MODAL ================= -->
+<div id="graphModal" class="graph-modal">
+    <div class="graph-modal-header">
+        <span>Graph (Fullscreen)</span>
+
+        <!--  Zoom slider (ONLY in fullscreen) -->
+        <div class="graph-zoom-control">
+            <span>Zoom</span>
+            <input
+                type="range"
+                id="graphZoom"
+                min="70"
+                max="140"
+                value="100"
+            />
+        </div>
+
+        <button id="closeGraphModal">✖</button>
+    </div>
+
+    <div class="graph-modal-body">
+        <div id="graphModalArea"></div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>
