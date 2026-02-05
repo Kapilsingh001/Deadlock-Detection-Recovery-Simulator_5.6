@@ -757,7 +757,7 @@ function updateResultUI(result) {
 function resetSystem() {
     // systemSnapShot = null;
     // snapshotLocked = false;
-    logEvent("System reset by user", "INFO");
+    logEvent("New session started", "INFO"); 
 
 
     
@@ -1588,7 +1588,11 @@ function updateRestoreButtonState() {
 
 function handleResourceModelChange() {
 
-    logEvent("Resource model changed", "INFO");
+      if (resourceModelSelect.value === "single") {
+        logEvent("Mode changed to Single Instance deadlock detection", "INFO");
+    } else {
+        logEvent("Mode changed to Multiple Instance (Banker-style) detection", "INFO");
+    }
 
 
     snapshotStack.length = 0;   // 🔥 clear undo history
