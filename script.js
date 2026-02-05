@@ -1,3 +1,4 @@
+
 // ===================== DOM ELEMENTS =====================
 const processInput = document.getElementById("processCount");
 const resourceInput = document.getElementById("resourceCount");
@@ -1650,8 +1651,7 @@ graphZoom.addEventListener("input", () => {
 });
 
 
-// Ading logs
-// ================= CLOUD LOG FETCH =================
+// Ading logs// ================= CLOUD LOG FETCH =================
 
 async function loadCloudLogs() {
     try {
@@ -1667,10 +1667,5 @@ async function loadCloudLogs() {
     }
 }
 
-// load logs when page opens
 loadCloudLogs();
-
-
-
-
-
+setInterval(loadCloudLogs, 5000);
