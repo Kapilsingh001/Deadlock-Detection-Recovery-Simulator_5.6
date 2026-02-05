@@ -1665,26 +1665,42 @@ graphZoom.addEventListener("input", () => {
 });
 
 
+
 // ================= CLOUD LOG FETCH =================
 async function loadCloudLogs() {
     try {
         const res = await fetch("https://deadlock-cloud-logs.onrender.com/logs");
-        const data = await res.json();
+        const logs = await res.json();
 
         const logBox = document.getElementById("cloudLogs");
-
         if (!logBox) return;
 
-        logBox.textContent = data
-            .map(log => `[${log.time}] ${log.level}: ${log.message}`)
-            .join("\n");
+        // If no logs yet
+        if (!Array.isArray(logs) || logs.length === 0) {
+            logBox.textContent = "No logs yet...";
+            return;
+        }
+
+        let output = "";
+
+        for (const log of logs) {
+            output += `[${log.time}] ${log.level}: ${log.message}\n`;
+        }
+
+        logBox.textContent = output;
+
+        // Auto-scroll to bottom
+        logBox.scrollTop = logBox.scrollHeight;
 
     } catch (err) {
         console.error("Cloud fetch error:", err);
     }
 }
 
+// Load once on page load
 loadCloudLogs();
+
+// Refresh every 5 seconds
 setInterval(loadCloudLogs, 5000);
 
 
@@ -1693,7 +1709,12 @@ setInterval(loadCloudLogs, 5000);
 function logEvent(message, level = "INFO") {
     fetch("https://deadlock-cloud-logs.onrender.com/log", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, level })
-    }).catch(err => console.log("Log failed:", err));
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message,
+            level
+        })
+    }).catch(err => console.error("Log failed:", err));
 }
