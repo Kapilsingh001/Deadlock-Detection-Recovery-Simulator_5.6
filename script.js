@@ -1665,7 +1665,7 @@ graphZoom.addEventListener("input", () => {
 });
 
 
-// Ading logs// ================= CLOUD LOG FETCH =================
+// ================= CLOUD LOG FETCH =================
 async function loadCloudLogs() {
     try {
         const res = await fetch("https://deadlock-cloud-logs.onrender.com/logs");
@@ -1673,9 +1673,12 @@ async function loadCloudLogs() {
 
         const logBox = document.getElementById("cloudLogs");
 
-        logBox.textContent = data
-            .map(log => `[${log.time}] ${log.level}: ${log.message}`)
-            .join("\n");
+        if (!Array.isArray(data)) {
+            logBox.textContent = "No logs available.";
+            return;
+        }
+
+        logBox.textContent = data.join("\n");
 
     } catch (err) {
         console.log("Cloud fetch error:", err);
@@ -1686,20 +1689,11 @@ loadCloudLogs();
 setInterval(loadCloudLogs, 5000);
 
 
-
-
 // ================= CLOUD LOGGER =================
 function logEvent(message, level = "INFO") {
-
     fetch("https://deadlock-cloud-logs.onrender.com/log", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message,
-            level
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, level })
     }).catch(err => console.log("Log failed:", err));
 }
-
