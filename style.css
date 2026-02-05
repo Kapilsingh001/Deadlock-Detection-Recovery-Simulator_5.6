@@ -782,3 +782,15 @@ button:hover {
 }
 
 
+#cloudLogs {
+    max-height: 200px;
+    overflow-y: auto;
+    background: #0f172a;
+    color: #e5e7eb;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+}
+

@@ -573,6 +573,9 @@ function buildWaitForGraph(allocation, request, available, resourceModel) {
 // ===================== MAIN HANDLER =====================
 function handleDeadlockDetection() {
 
+    logEvent("Deadlock detection started", "INFO");
+
+
     const p = parseInt(processInput.value);
     const r = parseInt(resourceInput.value);
     if (isNaN(p) || isNaN(r)) return;
@@ -683,6 +686,9 @@ function updateResultUI(result) {
 
     // 🔴 DEADLOCK CASE
     if (result.deadlock) {
+
+        logEvent("Deadlock detected", "ERROR");
+
         resultPanel.classList.add("deadlock");
 
         const cycleText = result.cycle
@@ -732,6 +738,8 @@ function updateResultUI(result) {
     }
 
     // 🟢 SAFE & NO WAITING
+    logEvent("System is safe", "SUCCESS");
+
     resultPanel.classList.add("safe");
 
     resultText.innerHTML = `
@@ -874,7 +882,11 @@ function terminateProcess() {
     terminatedProcesses.add(kill);
     waitingProcesses.delete(kill);
 
+    
+
+
     resultText.innerText = `Process ${formatProcess(kill)} terminated. Resources released.`;
+    logEvent(`Process ${formatProcess(kill)} terminated`, "WARNING");
 
     handleDeadlockDetection();
 }
@@ -920,6 +932,8 @@ function preemptResources() {
 
     resultPanel.className = "card waiting";
     resultText.innerText = `Resources preempted from ${formatProcess(victim)}. Process moved to WAITING state.`;
+    logEvent(`Resources preempted from ${formatProcess(victim)}`, "WARNING");
+
 
     handleDeadlockDetection();
 }
@@ -1652,20 +1666,39 @@ graphZoom.addEventListener("input", () => {
 
 
 // Ading logs// ================= CLOUD LOG FETCH =================
-
 async function loadCloudLogs() {
     try {
         const res = await fetch("https://deadlock-cloud-logs.onrender.com/logs");
-
         const data = await res.json();
 
-        document.getElementById("cloudLogs").textContent =
-            JSON.stringify(data, null, 2);
+        const logBox = document.getElementById("cloudLogs");
+
+        logBox.textContent = data
+            .map(log => `[${log.time}] ${log.level}: ${log.message}`)
+            .join("\n");
 
     } catch (err) {
         console.log("Cloud fetch error:", err);
     }
 }
 
+
 loadCloudLogs();
 setInterval(loadCloudLogs, 5000);
+
+
+// ================= CLOUD LOGGER =================
+function logEvent(message, level = "INFO") {
+
+    fetch("https://deadlock-cloud-logs.onrender.com/log", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message,
+            level
+        })
+    }).catch(err => console.log("Log failed:", err));
+}
+
