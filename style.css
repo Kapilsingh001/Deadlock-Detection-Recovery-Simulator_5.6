@@ -1,0 +1,783 @@
+/* =====================================================
+   DESIGN TOKENS
+===================================================== */
+:root {
+    --bg-main: #f3f5f9;
+    --bg-card: #ffffff;
+    --bg-soft: #f8fafc;
+
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+
+    --danger: #dc2626;
+    --warning: #f59e0b;
+    --success: #059669;
+
+    --border: #e5e7eb;
+
+    --radius-xl: 20px;
+    --radius-lg: 14px;
+    --radius-md: 10px;
+
+    --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* =====================================================
+   GLOBAL RESET
+===================================================== */
+* {
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 32px;
+    background: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+.app-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.app-header p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* .theory-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.theory-link:hover {
+    text-decoration: underline;
+} */
+
+/* =====================================================
+   CARD BASE
+===================================================== */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+}
+
+/* =====================================================
+   SYSTEM CONFIGURATION
+===================================================== */
+.system-config {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    align-items: end;
+}
+
+.system-config label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* =====================================================
+   INPUTS & SELECTS
+===================================================== */
+input,
+select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--text-main);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%236b7280' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+}
+
+/* =====================================================
+   MATRIX SECTION
+===================================================== */
+.matrix-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 340px;
+    gap: 28px;
+}
+
+.matrix-section h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+th {
+    background: var(--bg-soft);
+    font-weight: 600;
+}
+
+/* =====================================================
+   AVAILABLE RESOURCES
+===================================================== */
+.available-resources label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+button {
+    padding: 14px 26px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    min-width: 180px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: #ffffff;
+    box-shadow: var(--shadow-strong);
+}
+
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+/* Special buttons */
+#terminateBtn {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+
+#preemptBtn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+#restoreBtn {
+    background: #ffffff;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow-soft);
+}
+
+.nav-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+}
+
+/* =====================================================
+   DEADLOCK RECOVERY PANEL
+===================================================== */
+.deadlock-recovery {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.deadlock-recovery h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.recovery-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.recovery-actions button {
+    flex: 1;
+    min-width: 180px;
+}
+
+.recovery-primary button {
+    width: 100%;
+    padding: 16px;
+    font-size: 15px;
+}
+
+.recovery-undo button {
+    min-width: 240px;
+}
+/* =====================================================
+   DEADLOCK AVOIDANCE (BANKER'S ALGORITHM LINK)
+===================================================== */
+
+.avoidance-divider {
+    margin: 26px 0 14px;
+    text-align: center;
+    position: relative;
+}
+
+.avoidance-divider span {
+    background: var(--bg-card);
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+}
+
+.avoidance-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+}
+
+.avoidance-action {
+    text-align: center;
+}
+
+.avoidance-btn {
+    width: 100%;
+    max-width: 520px;
+}
+
+.avoidance-note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* =====================================================
+   RESULT PANEL
+===================================================== */
+#resultPanel {
+    padding: 24px;
+    border-radius: var(--radius-xl);
+    font-weight: 600;
+}
+
+.safe {
+    background: #ecfdf5;
+    color: var(--success);
+}
+
+.deadlock {
+    background: #fef2f2;
+    color: var(--danger);
+}
+
+.waiting {
+    background: #fffbeb;
+    color: var(--warning);
+}
+
+
+
+
+
+/* =====================================================
+   GRAPH LEGEND (STATUS PILLS)
+===================================================== */
+.graph-legend-inline {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 28px 0 18px;
+    flex-wrap: wrap;
+}
+
+.graph-legend-inline span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.red { background: #dc2626; }
+.legend-dot.yellow { background: #f59e0b; }
+.legend-dot.orange { background: #ea580c; }
+.legend-dot.blue { background: #2563eb; }
+
+/* =====================================================
+   FINAL STATE
+===================================================== */
+#finalStateText {
+    white-space: pre-wrap;
+    font-size: 13px;
+    background: var(--bg-soft);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 1100px) {
+    .matrix-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 18px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+/* important if graph is SVG */
+/* svg {
+  min-width: 600px;
+  min-height: 400px;
+} */
+
+
+/* // input correction */
+/* ================= MATRIX SCROLL FIX ================= */
+
+.matrix-wrapper {
+    max-height: 420px;      /* controls vertical visibility */
+    overflow: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+}
+
+/* Table base */
+.matrix-wrapper table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: max-content;
+    min-width: 100%;
+}
+
+/* Header row (R1, R2, ...) */
+.matrix-wrapper th {
+    position: sticky;
+    top: 0;
+    background: #f5f7fa;
+    z-index: 2;
+    font-weight: 600;
+}
+
+/* First column (P1, P2, ...) */
+.matrix-wrapper th:first-child {
+    left: 0;
+    z-index: 3;
+    background: #eef2f7;
+}
+
+/* First column cells */
+.matrix-wrapper td:first-child {
+    position: sticky;
+    left: 0;
+    background: #f9fafb;
+    z-index: 1;
+}
+
+/* Input cells */
+.matrix-wrapper input {
+    width: 42px;
+    height: 34px;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Improve focus visibility */
+.matrix-wrapper input:focus {
+    outline: none;
+    border-color: #2962ff;
+    box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.15);
+}
+
+
+/* ================= CELL CONTEXT INDICATOR ================= */
+
+
+/* ================= CELL CONTEXT INDICATOR — TABLE LEVEL ================= */
+
+.cell-indicator {
+    position: sticky;        /* ✅ sticks to table top */
+    top: 0;
+
+    z-index: 10;
+
+    background: #0f172a;
+    color: #ffffff;
+
+    padding: 8px 14px;
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    margin-bottom: 10px;
+
+    display: none;           /* hidden until editing */
+}
+
+.cell-indicator span {
+    white-space: nowrap;
+}
+
+
+
+
+
+
+
+/* SVG should NOT shrink */
+/* .graph-scroll svg,
+.graph-modal-body svg {
+    min-width: max-content;
+} */
+
+/* =====================================================
+   GRAPH — FINAL (NORMAL + FULLSCREEN + ZOOM)
+===================================================== */
+
+/* ========== GRAPH CONTAINER (NORMAL VIEW) ========== */
+
+.graph-container {
+    display: block;
+    width: 100%;
+    border-radius: 16px;
+}
+
+/* The ONLY scroll container */
+.graph-scroll {
+    width: 100%;
+    height: auto;                  /* ✅ shrink to content */
+    max-height: 700px;             /* ✅ fits p=20 (~600px) */
+    overflow-x: auto;
+    overflow-y: auto;
+
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+/* Graph drawing area */
+#graphArea {
+    width: 100%;
+    height: auto;                  /* 🔥 CRITICAL */
+    min-height: unset;             /* 🔥 remove forced height */
+
+    padding: 16px;                 /* reduced padding */
+    border-radius: 20px;
+    border: 2px dashed #e5e7eb;
+    background: #f8fafc;
+
+    display: block;                /* 🔥 DO NOT center vertically */
+    overflow: visible;             /* keep as you want */
+}
+
+/* SVG — SINGLE SOURCE OF SIZE */
+.graph-scroll svg {
+    display: block;
+    margin: 0 auto;
+
+    width: max-content;            /* prevents horizontal clipping */
+    height: auto;                  /* 🔥 SVG controls height */
+    min-width: 900px;
+}
+/* =====================================================
+   FULLSCREEN GRAPH
+===================================================== */
+
+.graph-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    z-index: 9999;
+}
+
+.graph-modal.show {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.graph-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 16px;
+    background: #0f172a;
+    color: #ffffff;
+}
+
+/* Body (scrolls, NOT flex) */
+.graph-modal-body {
+    flex: 1;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    padding: 16px;
+    background: #f4f6fb;
+}
+
+/* SVG inside fullscreen */
+.graph-modal-body svg {
+    display: block;
+    margin: auto;
+
+    width: max-content;
+    height: auto;
+    min-width: 900px;
+}
+
+
+/* =====================================================
+   ZOOM CONTROLS
+===================================================== */
+
+.graph-zoom-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.graph-zoom-control input[type="range"] {
+    width: 140px;
+    cursor: pointer;
+}
+
+/* ================= CELL INDICATOR (TABLE-LOCAL FIXED) ================= */
+
+.card {
+    position: relative; /* 🔥 REQUIRED anchor */
+}
+
+.cell-indicator {
+    position: sticky;     /* ✅ fixed inside card */
+    top: 0;               /* stick to top of card */
+
+    z-index: 20;
+
+    background: #0f172a;
+    color: #ffffff;
+
+    padding: 8px 14px;
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    margin-bottom: 10px;
+
+    display: none;        /* shown only while editing */
+}
+
+.cell-indicator span {
+    white-space: nowrap;
+}
+
+
+
+
+
+/* =====================================================
+   MOBILE IMPROVEMENTS (PHONES ONLY)
+===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- GLOBAL ---------- */
+    body {
+        padding: 14px;
+    }
+
+    h1 {
+        font-size: 22px;
+        line-height: 1.3;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    /* Prevent iOS zoom on focus */
+    input,
+    select,
+    button {
+        font-size: 16px;
+    }
+
+    /* ---------- SYSTEM CONFIG ---------- */
+    .system-config {
+        gap: 16px;
+    }
+
+    /* ---------- MATRIX SECTION ---------- */
+    .matrix-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 6px;
+    }
+
+    /* Horizontal scroll for matrices */
+    .card > div[id$="Matrix"],
+    #availableResources {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Matrix inputs (touch friendly) */
+    table input {
+        width: 44px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    /* ---------- ACTION BUTTONS ---------- */
+    .actions {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    button {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    /* ---------- GRAPH ---------- */
+    .graph-scroll {
+        max-height: 60vh;
+        padding: 8px;
+        overflow: auto;
+        border: 2px dashed #c7d2fe;
+    }
+
+    #graphArea {
+        padding: 10px;
+    }
+
+    /* Graph usage hint */
+    #graphTitle::after {
+        content: " (Use Fullscreen / Rotate Phone)";
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 400;
+    }
+
+    .graph-fullscreen-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    /* ---------- RECOVERY PANEL ---------- */
+    .recovery-actions {
+        flex-direction: column;
+    }
+
+    .recovery-actions button {
+        width: 100%;
+    }
+
+    /* ---------- FINAL STATE ---------- */
+    #finalStateText {
+        font-size: 12px;
+        padding: 12px;
+    }
+}
+
+
