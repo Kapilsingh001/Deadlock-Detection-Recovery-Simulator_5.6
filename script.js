@@ -1668,18 +1668,19 @@ graphZoom.addEventListener("input", () => {
 // ================= CLOUD LOG FETCH =================
 async function loadCloudLogs() {
     try {
-
         const res = await fetch("https://deadlock-cloud-logs.onrender.com/logs");
         const data = await res.json();
 
         const logBox = document.getElementById("cloudLogs");
+
+        if (!logBox) return;
 
         logBox.textContent = data
             .map(log => `[${log.time}] ${log.level}: ${log.message}`)
             .join("\n");
 
     } catch (err) {
-        console.log("Cloud fetch error:", err);
+        console.error("Cloud fetch error:", err);
     }
 }
 
