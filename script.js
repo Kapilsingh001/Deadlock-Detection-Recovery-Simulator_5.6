@@ -1262,13 +1262,17 @@ function detectDeadlockMultipleInstance(allocation, request, available) {
 }
 
 // 2.
-
 function updateResultUIMultiple(result) {
 
     resultPanel.className = "card";
     terminateSelect.innerHTML = '<option value="">Select process</option>';
 
     if (result.deadlock) {
+
+        logEvent(
+            `Deadlock detected (multiple instance) — ${result.deadlockedProcesses.length} process(es) blocked`,
+            "ERROR"
+        );
 
         resultPanel.classList.add("deadlock");
 
@@ -1285,18 +1289,23 @@ function updateResultUIMultiple(result) {
         for (let p of result.deadlockedProcesses) {
             const option = document.createElement("option");
             option.value = p;
-            option.textContent = formatProcess(p);;
+            option.textContent = formatProcess(p);
             terminateSelect.appendChild(option);
         }
+
         return;
     }
 
+    logEvent("System is safe (multiple instance)", "SUCCESS");
+
     resultPanel.classList.add("safe");
+
     resultText.innerHTML = `
         <strong>SAFE STATE</strong><br><br>
         All process requests can be satisfied.
     `;
 }
+
 
 // 3.
 function buildProcessResourceDependencyGraph(request, available) {
