@@ -757,7 +757,10 @@ function updateResultUI(result) {
 function resetSystem() {
     // systemSnapShot = null;
     // snapshotLocked = false;
+    logEvent("System reset by user", "INFO");
 
+
+    
 
 
      snapshotStack.length = 0;     // ✅ clear undo history
@@ -809,6 +812,9 @@ waitingAuto.clear();
 //example
 function loadExampleInput() {
 
+    
+
+
     // 🔥 FULL RESET FIRST
     resetInternalState();
 
@@ -840,6 +846,8 @@ function loadExampleInput() {
     // Reset UI text
     resultPanel.className = "card";
     resultText.innerText = "Example loaded. Click Detect Deadlock.";
+
+    logEvent("Example input loaded", "INFO");
 
     // ❌ DO NOT auto-detect
     handleDeadlockDetection();
@@ -1473,9 +1481,13 @@ document.getElementById("restoreBtn")
 
 
 function undoLastRecoveryStep() {
+
+    
 if (snapshotStack.length === 0) {
     return;
 }
+
+logEvent("Undo last recovery step", "INFO");
 
 
     isRestoring = true;
@@ -1549,6 +1561,8 @@ if (snapshotStack.length === 0) {
    
     isRestoring = false;
 updateRestoreButtonState();
+logEvent("System state restored successfully", "SUCCESS");
+
 
     
 
@@ -1564,6 +1578,9 @@ function updateRestoreButtonState() {
 
 
 function handleResourceModelChange() {
+
+    logEvent("Resource model changed", "INFO");
+
 
     snapshotStack.length = 0;   // 🔥 clear undo history
     lastDetectionResult = null;
