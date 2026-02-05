@@ -757,7 +757,8 @@ function updateResultUI(result) {
 function resetSystem() {
     // systemSnapShot = null;
     // snapshotLocked = false;
-    logEvent("New session started", "INFO"); 
+    logEvent("=== New simulation session started ===", "INFO");
+
 
 
     
