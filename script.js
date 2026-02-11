@@ -1697,10 +1697,19 @@ graphZoom.addEventListener("input", () => {
 
 
 
+// create simple user id (browser session)
+const userId = localStorage.getItem("deadlockUser")
+    || crypto.randomUUID();
+
+localStorage.setItem("deadlockUser", userId);
+
 // ================= CLOUD LOG FETCH =================
 async function loadCloudLogs() {
     try {
-        const res = await fetch("https://deadlock-cloud-logs.onrender.com/logs");
+        const res = await fetch(
+    `https://deadlock-cloud-logs.onrender.com/logs/${userId}`
+);
+
         const logs = await res.json();
 
         const logBox = document.getElementById("cloudLogs");
@@ -1736,16 +1745,18 @@ setInterval(loadCloudLogs, 5000);
 
 
 
-// ================= CLOUD LOGGER =================
+
 function logEvent(message, level = "INFO") {
+
     fetch("https://deadlock-cloud-logs.onrender.com/log", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            message,
-            level
+            userId: userId,   // ⭐ REQUIRED
+            message: message,
+            level: level
         })
     }).catch(err => console.error("Log failed:", err));
 }
