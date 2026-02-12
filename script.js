@@ -206,6 +206,7 @@ function generateTables() {
             "Process–Resource Graph will be used during detection."
         );
     }
+    logEvent(`System configured | Processes=${p} Resources=${r}`,"INFO");
 
     createMatrix(allocationDiv, p, r);
     createMatrix(requestDiv, p, r);
@@ -474,6 +475,8 @@ function drawWaitForGraph(graph, cycle = []) {
 
     graphArea.appendChild(svg);
 
+    logEvent("Graph rendered", "DEBUG");
+
     /* ===================== AUTO CENTER SCROLL ===================== */
 
     const scroll = graphArea.closest(".graph-scroll");
@@ -573,8 +576,7 @@ function buildWaitForGraph(allocation, request, available, resourceModel) {
 // ===================== MAIN HANDLER =====================
 function handleDeadlockDetection() {
 
-    logEvent("Deadlock detection started", "INFO");
-
+   
 
     const p = parseInt(processInput.value);
     const r = parseInt(resourceInput.value);
@@ -584,6 +586,12 @@ function handleDeadlockDetection() {
     const request = readMatrix(requestDiv, p, r);
     const available = readAvailable(availableDiv, r);
     const resourceModel = resourceModelSelect.value;
+
+     logEvent(
+    `Detection started | P=${p} R=${r} Mode=${resourceModel}`,
+    "INFO"
+);
+
 
     let result;
 
@@ -611,6 +619,7 @@ function handleDeadlockDetection() {
                 for (let j = 0; j < r; j++) {
                     if (request[i][j] > available[j]) {
                         waitingAuto.add(i);
+                         logEvent(`${formatProcess(i)} waiting (resource unavailable)`,"INFO");
                         break;
                     }
                 }
@@ -689,6 +698,10 @@ function updateResultUI(result) {
 
         logEvent("Deadlock detected", "ERROR");
 
+         logEvent(`Deadlock cycle: ${result.cycle.map(p => formatProcess(p)).join("->")}`, "ERROR");
+
+        
+
         resultPanel.classList.add("deadlock");
 
         const cycleText = result.cycle
@@ -738,7 +751,8 @@ function updateResultUI(result) {
     }
 
     // 🟢 SAFE & NO WAITING
-    logEvent("System is safe", "SUCCESS");
+    logEvent("Deadlock resolved successfully", "SUCCESS");
+
 
     resultPanel.classList.add("safe");
 
@@ -895,7 +909,8 @@ function terminateProcess() {
 
 
     resultText.innerText = `Process ${formatProcess(kill)} terminated. Resources released.`;
-    logEvent(`Process ${formatProcess(kill)} terminated`, "WARNING");
+    logEvent(`Process ${formatProcess(kill)} terminated | Resources released`,"WARNING");
+
 
     handleDeadlockDetection();
 }
@@ -1051,6 +1066,8 @@ finalText.innerText = output;
 
 window.addEventListener("load", () => {
   // Start with clean UI
+  logEvent("User session started", "INFO"); 
+
   resultText.innerText = "Configure system and detect deadlock.";
 });
 
@@ -1448,6 +1465,8 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
     }
 
     graphArea.appendChild(svg);
+
+    logEvent("Graph rendered", "DEBUG");
 
     /* ===================== AUTO CENTER ===================== */
 
