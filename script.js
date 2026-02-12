@@ -1,5 +1,5 @@
 
-// ===================== DOM ELEMENTS =====================
+// DOM ELEMENTS 
 const processInput = document.getElementById("processCount");
 const resourceInput = document.getElementById("resourceCount");
 const generateBtn = document.getElementById("generateBtn");
@@ -140,7 +140,7 @@ document.addEventListener("focusout", (e) => {
     activeIndicatorInput = null;
 });
 
-// ===================== SMART NUMERIC INPUT HANDLING =====================
+//SMART NUMERIC INPUT HANDLING 
 let previousValueMap = new WeakMap();
 
 document.addEventListener("focusin", (e) => {
@@ -185,12 +185,12 @@ document.addEventListener("focusout", (e) => {
 
 
 
-// ===================== EVENT LISTENERS =====================
+// EVENT LISTENERS
 generateBtn.addEventListener("click", generateTables);
 detectBtn.addEventListener("click", handleDeadlockDetection);
 resourceModelSelect.addEventListener("change", handleResourceModelChange);
 
-// ===================== TABLE GENERATION =====================
+// TABLE GENERATION 
 function generateTables() {
     const p = parseInt(processInput.value);
     const r = parseInt(resourceInput.value);
@@ -243,9 +243,9 @@ function createMatrix(container, rows, cols) {
         for (let j = 0; j < cols; j++) {
             const td = document.createElement("td");
             const input = document.createElement("input");
-        input.type = "text";                 // ✅ MUST BE text
-        input.inputMode = "numeric";         // ✅ numeric keyboard
-        input.pattern = "[0-9]*";            // ✅ digits only
+        input.type = "text";                 
+        input.inputMode = "numeric";        
+        input.pattern = "[0-9]*";            
          input.value = "0";
 
         
@@ -281,7 +281,7 @@ function createAvailableInputs(container, count) {
     }
 }
 
-// ===================== READ INPUT =====================
+//  READ INPUT 
 function readMatrix(container, rows, cols) {
     const matrix = [];
     const inputs = container.querySelectorAll("input");
@@ -310,7 +310,7 @@ function readAvailable(container, count) {
     return available;
 }
 
-// ===================== WAIT-FOR GRAPH =====================
+//  WAIT-FOR GRAPH
 function drawWaitForGraph(graph, cycle = []) {
 
     document.getElementById("graphLegend").style.display = "flex";
@@ -334,7 +334,7 @@ function drawWaitForGraph(graph, cycle = []) {
         return;
     }
 
-    /* ===================== LAYOUT CONFIG ===================== */
+    //LAYOUT CONFIG 
 
     const radius = 22;
     const gap = 30;
@@ -360,9 +360,9 @@ function drawWaitForGraph(graph, cycle = []) {
     const width = layoutRadius * 2 + padding;
 
     const cx = width / 2;
-    const cy = width / 2; // temporary center (will be corrected by viewBox)
+    const cy = width / 2; 
 
-    /* ===================== SVG ===================== */
+   // SVG 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", width);
@@ -371,7 +371,7 @@ function drawWaitForGraph(graph, cycle = []) {
 
     const positions = {};
 
-    /* ===================== NODE POSITIONS ===================== */
+    // NODE POSITIONS
 
     for (let i = 0; i < total; i++) {
         const pId = activeProcesses[i];
@@ -383,7 +383,7 @@ function drawWaitForGraph(graph, cycle = []) {
         };
     }
 
-    /* ===================== AUTO-FIT SVG (NO GAP FIX) ===================== */
+    //AUTO-FIT SVG 
 
     let minX = Infinity, maxX = -Infinity;
     let minY = Infinity, maxY = -Infinity;
@@ -406,14 +406,14 @@ function drawWaitForGraph(graph, cycle = []) {
     const contentWidth  = maxX - minX;
     const contentHeight = maxY - minY;
 
-    // 🔥 KEY LINES — REMOVE ALL EMPTY SPACE
+    // REMOVE ALL EMPTY SPACE
     svg.setAttribute(
         "viewBox",
         `${minX} ${minY} ${contentWidth} ${contentHeight}`
     );
     svg.setAttribute("height", contentHeight);
 
-    /* ===================== DRAW EDGES ===================== */
+    // DRAW EDGES 
 
     for (let fromKey in graph) {
         const from = Number(fromKey);
@@ -440,7 +440,7 @@ function drawWaitForGraph(graph, cycle = []) {
         }
     }
 
-    /* ===================== DRAW NODES ===================== */
+    // DRAW NODES 
 
     for (let p of activeProcesses) {
 
@@ -477,7 +477,7 @@ function drawWaitForGraph(graph, cycle = []) {
 
     logEvent("Graph rendered", "DEBUG");
 
-    /* ===================== AUTO CENTER SCROLL ===================== */
+    // AUTO CENTER SCROLL
 
     const scroll = graphArea.closest(".graph-scroll");
     if (scroll) {
@@ -486,7 +486,7 @@ function drawWaitForGraph(graph, cycle = []) {
 }
 
 
-// ===================== DFS CYCLE DETECTION =====================
+// DFS CYCLE DETECTION
 function dfsDetectCycle(node, graph, visited, recStack, path) {
     visited[node] = true;
     recStack[node] = true;
@@ -573,7 +573,7 @@ function buildWaitForGraph(allocation, request, available, resourceModel) {
     return graph;
 }
 
-// ===================== MAIN HANDLER =====================
+// MAIN HANDLER
 function handleDeadlockDetection() {
 
    
@@ -595,7 +595,7 @@ function handleDeadlockDetection() {
 
     let result;
 
-    // ================= MULTIPLE INSTANCE =================
+    //MULTIPLE INSTANCE 
     if (resourceModel === "multiple") {
 
         result = detectDeadlockMultipleInstance(
@@ -643,7 +643,7 @@ function handleDeadlockDetection() {
         updateSystemFinalState(result);
         return;
     }
-    // 🔥 LARGE SYSTEM → FORCE PROCESS-RESOURCE GRAPH
+    //  LARGE SYSTEM → FORCE PROCESS-RESOURCE GRAPH
 if (p > 50) {
     const depGraph = buildProcessResourceDependencyGraph(request, available);
 
@@ -661,7 +661,7 @@ if (p > 50) {
 }
 
 
-    // ================= SINGLE INSTANCE =================
+    //SINGLE INSTANCE
     const graph = buildWaitForGraph(
         allocation,
         request,
@@ -683,8 +683,8 @@ if (p > 50) {
     updateSystemFinalState(result);
 }
 
-// ===================== UI UPDATE =====================
-//-----------------------------------------------MOST-IMPORTANT---------------------------------------------------//
+//  UI UPDATE 
+
 function updateResultUI(result) {
 
     // reset panel style
@@ -693,7 +693,7 @@ function updateResultUI(result) {
     // always reset dropdown
     terminateSelect.innerHTML = '<option value="">Select process</option>';
 
-    // 🔴 DEADLOCK CASE
+    //  DEADLOCK CASE
     if (result.deadlock) {
 
         logEvent("Deadlock detected", "ERROR");
@@ -734,7 +734,7 @@ function updateResultUI(result) {
     
 
 
-    // 🟡 SAFE BUT WAITING CASE
+    //  SAFE BUT WAITING CASE
     if (waitingProcesses.size > 0) {
         resultPanel.classList.add("waiting");
 
@@ -750,7 +750,7 @@ function updateResultUI(result) {
         return;
     }
 
-    // 🟢 SAFE & NO WAITING
+    //  SAFE & NO WAITING
     logEvent("Deadlock resolved successfully", "SUCCESS");
 
 
@@ -764,7 +764,7 @@ function updateResultUI(result) {
 }
 
 
-// ===================== SVG GRAPH =====================
+//  SVG GRAPH
 
 
 //reset
@@ -778,8 +778,8 @@ function resetSystem() {
     
 
 
-     snapshotStack.length = 0;     // ✅ clear undo history
-    lastDetectionResult = null;   // ✅ reset detection memory
+     snapshotStack.length = 0;     //  clear undo history
+    lastDetectionResult = null;   //  reset detection memory
     isRestoring = false;
 
     
@@ -830,7 +830,7 @@ function loadExampleInput() {
     
 
 
-    // 🔥 FULL RESET FIRST
+    //  FULL RESET FIRST
     resetInternalState();
 
     // Set system size
@@ -864,7 +864,7 @@ function loadExampleInput() {
 
     logEvent("Example input loaded", "INFO");
 
-    // ❌ DO NOT auto-detect
+    
     handleDeadlockDetection();
 }
 
@@ -878,7 +878,7 @@ function terminateProcess() {
         return;
     }
 
-    // ✅ ALWAYS snapshot BEFORE recovery action
+    //   snapshot BEFORE recovery action
     if (!isRestoring) {
         snapshotStack.push(createSnapshot(lastDetectionResult || { deadlock: false }));
         updateRestoreButtonState();
@@ -923,7 +923,7 @@ function preemptResources() {
         return;
     }
 
-    // ✅ ALWAYS snapshot BEFORE recovery action
+    //  ALWAYS snapshot BEFORE recovery action
     if (!isRestoring) {
         snapshotStack.push(createSnapshot(lastDetectionResult || { deadlock: false }));
         updateRestoreButtonState();
@@ -1026,7 +1026,7 @@ function updateSystemFinalState(result){
         }
     }
 
-    // ---------------- Available Resources ----------------
+    // Available Resources
     output += "\nAvailable Resources:\n";
 
     for(let j=0;j<r;j++){
@@ -1072,137 +1072,6 @@ window.addEventListener("load", () => {
 });
 
 
-// function hideLiveDemoBanner() {
-//     const banner = document.getElementById("liveDemoBanner");
-//     if (banner) {
-//         banner.style.opacity = "0";
-//         setTimeout(() => {
-//             banner.style.display = "none";
-//         }, 500);
-//     }
-// }
-
-// detectBtn.addEventListener("click", hideLiveDemoBanner);
-// resetBtn.addEventListener("click", hideLiveDemoBanner);
-// exampleBtn.addEventListener("click", hideLiveDemoBanner);
-
-// document.getElementById("skipDemoBtn").addEventListener("click", () => {
-
-//     // 1️⃣ Hide live demo banner
-//     hideLiveDemoBanner();
-
-//     // 2️⃣ Reset everything to clean state
-//     resetSystem();
-
-//     // 3️⃣ Optional: guide user
-//     resultText.innerText = "Live demo skipped. Configure system and detect deadlock.";
-// });
-
-
-// snapShort part--->
-// function saveSystemSnapShot(result) {
-//     if (snapshotLocked) return;   // 🔒 prevent overwrite
-
-//     const p = parseInt(processInput.value);
-//     const r = parseInt(resourceInput.value);
-
-//     systemSnapShot = {
-//         allocation: readMatrix(allocationDiv, p, r),
-//         request: readMatrix(requestDiv, p, r),
-//         available: readAvailable(availableDiv, r),
-
-//         resourceModel: resourceModelSelect.value,
-
-//         terminated: new Set(terminatedProcesses),
-//         waitingSingle: new Set(waitingProcesses),
-//         waitingManual: new Set(waitingManual),
-//         waitingAuto: new Set(waitingAuto),
-
-//         deadlock: result.deadlock,
-//         cycle: result.cycle || [],
-//         deadlockedProcesses: result.deadlockedProcesses || []
-//     };
-
-//     snapshotLocked = true; // 🔒 LOCK IT
-// }
-
-
-// function restorePreviousState() {
-
-//     if (!systemSnapShot) {
-//         alert("No previous state available.");
-//         return;
-//     }
-
-//     isRestoring = true; // 🔒 START RESTORE MODE
-
-//     // 1️⃣ Restore matrices
-//     writeMatrix(allocationDiv, systemSnapShot.allocation);
-//     writeMatrix(requestDiv, systemSnapShot.request);
-//     writeAvailable(availableDiv, systemSnapShot.available);
-
-//     // 2️⃣ Restore process state sets
-//     terminatedProcesses.clear();
-//     waitingProcesses.clear();
-//     waitingManual.clear();
-//     waitingAuto.clear();
-
-//     systemSnapShot.terminated.forEach(p => terminatedProcesses.add(p));
-//     systemSnapShot.waitingSingle.forEach(p => waitingProcesses.add(p));
-//     systemSnapShot.waitingManual.forEach(p => waitingManual.add(p));
-//     systemSnapShot.waitingAuto.forEach(p => waitingAuto.add(p));
-
-//     // 3️⃣ Restore resource model
-//     resourceModelSelect.value = systemSnapShot.resourceModel;
-
-//     // 4️⃣ Show legend
-//     document.getElementById("graphLegend").style.display = "flex";
-
-//     // ================= REDRAW GRAPH (FROM SNAPSHOT ONLY) =================
-//     if (systemSnapShot.resourceModel === "multiple") {
-
-//         const depGraph = buildProcessResourceDependencyGraph(
-//             systemSnapShot.request,
-//             systemSnapShot.available
-//         );
-
-//         drawMultiInstanceGraph(
-//             depGraph,
-//             systemSnapShot.deadlockedProcesses
-//         );
-
-//         updateResultUIMultiple({
-//             deadlock: systemSnapShot.deadlock,
-//             deadlockedProcesses: systemSnapShot.deadlockedProcesses
-//         });
-
-//     } else {
-
-//         const graph = buildWaitForGraph(
-//             systemSnapShot.allocation,
-//             systemSnapShot.request,
-//             systemSnapShot.available,
-//             "single"
-//         );
-
-//         drawWaitForGraph(graph, systemSnapShot.cycle);
-
-//         updateResultUI({
-//             deadlock: systemSnapShot.deadlock,
-//             cycle: systemSnapShot.cycle
-//         });
-//     }
-
-//     updateSystemFinalState({ deadlock: systemSnapShot.deadlock });
-
-//      // 🔥 THIS WAS MISSING
-//     snapshotLocked = false;   // ✅ allow next snapshot
-//     systemSnapShot = null;    // ✅ clear old snapshot
-
-//     isRestoring = false;
-// }
-
-
 
 
 // rebuild-->
@@ -1222,7 +1091,7 @@ function rebuildTerminateDropdown(cycle) {
     }
 }
 
-// --------------multiple instance correction
+// multiple instance correction
 // 1.
 function detectDeadlockMultipleInstance(allocation, request, available) {
     const p = allocation.length;
@@ -1231,7 +1100,7 @@ function detectDeadlockMultipleInstance(allocation, request, available) {
     const work = [...available];
     const finish = new Array(p).fill(false);
 
-    // processes with zero allocation can finish
+    // processes with zero allocation finish
     for (let i = 0; i < p; i++) {
         let hasAllocation = false;
         for (let j = 0; j < r; j++) {
@@ -1357,7 +1226,7 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
     const p = Object.keys(depGraph).length;
     const r = Math.max(...Object.values(depGraph).flat(), -1) + 1;
 
-    /* ===================== LAYOUT ===================== */
+    //LAYOUT 
 
     const spacing = Math.max(90, Math.min(140, 6000 / Math.max(p, 1)));
     const padding = 120;
@@ -1372,19 +1241,19 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
     const processY = 90;
     const resourceY = 250;
 
-    /* ===================== SVG ===================== */
+    //SVG 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", width);
     svg.setAttribute("height", height);
     svg.style.display = "block";
 
-    /* ===================== POSITIONS ===================== */
+    // POSITIONS 
 
     const processPos = {};
     const resourcePos = {};
 
-    /* ===================== PROCESSES ===================== */
+    //PROCESSES
 
     for (let i = 0; i < p; i++) {
         const x = padding + i * spacing;
@@ -1422,7 +1291,7 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
         svg.appendChild(t);
     }
 
-    /* ===================== RESOURCES ===================== */
+    //RESOURCES 
 
     for (let j = 0; j < r; j++) {
         const x = padding + j * spacing;
@@ -1449,7 +1318,7 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
         svg.appendChild(t);
     }
 
-    /* ===================== EDGES ===================== */
+    //EDGES 
 
     for (let i in depGraph) {
         for (let j of depGraph[i]) {
@@ -1468,14 +1337,14 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
 
     logEvent("Graph rendered", "DEBUG");
 
-    /* ===================== AUTO CENTER ===================== */
+    //AUTO CENTER 
 
     const scroll = graphArea.closest(".graph-scroll") || graphArea;
     scroll.scrollLeft = (scroll.scrollWidth - scroll.clientWidth) / 2;
 }
 
 
-// ===================== SNAPSHOT HELPERS =====================
+//  SNAPSHOT HELPERS 
 
 function createSnapshot(result) {
     const p = parseInt(processInput.value);
@@ -1524,12 +1393,12 @@ logEvent("Undo last recovery step", "INFO");
     const snapshot = snapshotStack.pop();
 
 
-    // 1️⃣ Restore matrices
+    // 1️ Restore matrices
     writeMatrix(allocationDiv, snapshot.allocation);
     writeMatrix(requestDiv, snapshot.request);
     writeAvailable(availableDiv, snapshot.available);
 
-    // 2️⃣ Restore process states
+    // 2️ Restore process states
     terminatedProcesses.clear();
     waitingProcesses.clear();
     waitingManual.clear();
@@ -1540,12 +1409,12 @@ logEvent("Undo last recovery step", "INFO");
     snapshot.waitingManual.forEach(p => waitingManual.add(p));
     snapshot.waitingAuto.forEach(p => waitingAuto.add(p));
 
-    // 3️⃣ Restore model
+    // 3️ Restore model
     resourceModelSelect.value = snapshot.resourceModel;
 
     document.getElementById("graphLegend").style.display = "flex";
 
-    // 4️⃣ Redraw graph from snapshot
+    // 4️ Redraw graph from snapshot
     if (snapshot.resourceModel === "multiple") {
 
         const depGraph = buildProcessResourceDependencyGraph(
@@ -1571,14 +1440,14 @@ logEvent("Undo last recovery step", "INFO");
 
     updateSystemFinalState(snapshot);
 
-    // ✅ VERY IMPORTANT
+    
     lastDetectionResult = {
         deadlock: snapshot.deadlock,
         cycle: snapshot.cycle || [],
         deadlockedProcesses: snapshot.deadlockedProcesses || []
     };
 
-    // 5️⃣ Rebuild recovery dropdown if deadlock still exists
+    // 5️ Rebuild recovery dropdown if deadlock still exists
     if (snapshot.deadlock) {
         if (snapshot.resourceModel === "multiple") {
             rebuildTerminateDropdown(snapshot.deadlockedProcesses);
@@ -1615,7 +1484,7 @@ function handleResourceModelChange() {
     }
 
 
-    snapshotStack.length = 0;   // 🔥 clear undo history
+    snapshotStack.length = 0;   //  clear undo history
     lastDetectionResult = null;
     isRestoring = false;
 
@@ -1637,37 +1506,11 @@ function handleResourceModelChange() {
 }
 
 
-// mking fullscreen correct
-// closeGraphModal.addEventListener("click", () => {
-//     const svg = graphModalArea.querySelector("svg");
-//     if (!svg) return;
-
-//     // reset zoom
-//     svg.style.transform = "scale(1)";
-//     svg.style.transformOrigin = "center center";
-//     graphZoom.value = 100;
-
-//     // move back
-//     graphModalArea.innerHTML = "";
-//     graphArea.appendChild(svg);
-
-//     graphModal.classList.remove("show");
-// });
-// ===================== GRAPH FULLSCREEN (SAFE) =====================
-
-
-// 
-
-
-/* =====================================================
-   GRAPH FULLSCREEN HANDLING (FINAL)
-===================================================== */
 
 
 
-/* =====================================================
-   GRAPH FULLSCREEN + ZOOM (SINGLE SOURCE OF TRUTH)
-===================================================== */
+  // GRAPH FULLSCREEN + ZOOM.
+
 
 const graphModal = document.getElementById("graphModal");
 const graphModalArea = document.getElementById("graphModalArea");
@@ -1722,7 +1565,7 @@ const userId = localStorage.getItem("deadlockUser")
 
 localStorage.setItem("deadlockUser", userId);
 
-// ================= CLOUD LOG FETCH =================
+//  CLOUD LOG FETCH
 async function loadCloudLogs() {
     try {
         const res = await fetch(
@@ -1773,7 +1616,7 @@ function logEvent(message, level = "INFO") {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            userId: userId,   // ⭐ REQUIRED
+            userId: userId,  
             message: message,
             level: level
         })

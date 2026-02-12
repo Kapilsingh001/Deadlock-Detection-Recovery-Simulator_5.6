@@ -1,7 +1,4 @@
-
-/* =====================================================
-   DESIGN TOKENS
-===================================================== */
+  /* DESIGN TOKENS */
 :root {
     --bg-main: #f3f5f9;
     --bg-card: #ffffff;
@@ -27,9 +24,9 @@
     --shadow-strong: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* =====================================================
-   GLOBAL RESET
-===================================================== */
+
+   /* GLOBAL RESET */
+
 * {
     box-sizing: border-box;
     font-family: "Inter", "Segoe UI", system-ui, sans-serif;
@@ -43,9 +40,9 @@ body {
     line-height: 1.6;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
+
+   /* HEADER */
+
 .app-header {
     text-align: center;
     margin-bottom: 40px;
@@ -63,22 +60,11 @@ body {
     color: var(--text-muted);
 }
 
-/* .theory-link {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 14px;
-    color: var(--primary);
-    font-weight: 600;
-    text-decoration: none;
-}
 
-.theory-link:hover {
-    text-decoration: underline;
-} */
 
-/* =====================================================
-   CARD BASE
-===================================================== */
+
+   /* CARD BASE */
+
 .card {
     background: var(--bg-card);
     border-radius: var(--radius-xl);
@@ -88,9 +74,9 @@ body {
     box-shadow: var(--shadow-soft);
 }
 
-/* =====================================================
-   SYSTEM CONFIGURATION
-===================================================== */
+
+   /* SYSTEM CONFIGURATION */
+
 .system-config {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -106,9 +92,9 @@ body {
     color: var(--text-muted);
 }
 
-/* =====================================================
-   INPUTS & SELECTS
-===================================================== */
+
+   /* INPUTS & SELECTS */
+
 input,
 select {
     width: 100%;
@@ -135,9 +121,9 @@ select {
     background-size: 16px;
 }
 
-/* =====================================================
-   MATRIX SECTION
-===================================================== */
+
+   /* MATRIX SECTION */
+
 .matrix-section {
     display: grid;
     grid-template-columns: 1fr 1fr 340px;
@@ -169,9 +155,9 @@ th {
     font-weight: 600;
 }
 
-/* =====================================================
-   AVAILABLE RESOURCES
-===================================================== */
+
+   /* AVAILABLE RESOURCES */
+
 .available-resources label {
     display: flex;
     justify-content: space-between;
@@ -180,9 +166,9 @@ th {
     margin-bottom: 14px;
 }
 
-/* =====================================================
-   ACTION BUTTONS
-===================================================== */
+
+   /* ACTION BUTTONS */
+
 .actions {
     display: flex;
     justify-content: center;
@@ -227,9 +213,9 @@ button:hover {
     background: linear-gradient(135deg, var(--primary), var(--primary-hover));
 }
 
-/* =====================================================
-   DEADLOCK RECOVERY PANEL
-===================================================== */
+
+   /* DEADLOCK RECOVERY PANEL */
+
 .deadlock-recovery {
     display: flex;
     flex-direction: column;
@@ -262,9 +248,9 @@ button:hover {
 .recovery-undo button {
     min-width: 240px;
 }
-/* =====================================================
-   DEADLOCK AVOIDANCE (BANKER'S ALGORITHM LINK)
-===================================================== */
+
+   /* DEADLOCK AVOIDANCE (BANKER'S ALGORITHM LINK) */
+
 
 .avoidance-divider {
     margin: 26px 0 14px;
@@ -308,9 +294,9 @@ button:hover {
     color: var(--text-muted);
 }
 
-/* =====================================================
-   RESULT PANEL
-===================================================== */
+
+   /* RESULT PANEL */
+
 #resultPanel {
     padding: 24px;
     border-radius: var(--radius-xl);
@@ -336,9 +322,9 @@ button:hover {
 
 
 
-/* =====================================================
-   GRAPH LEGEND (STATUS PILLS)
-===================================================== */
+
+   /* GRAPH LEGEND */
+
 .graph-legend-inline {
     display: flex;
     justify-content: center;
@@ -371,9 +357,9 @@ button:hover {
 .legend-dot.orange { background: #ea580c; }
 .legend-dot.blue { background: #2563eb; }
 
-/* =====================================================
-   FINAL STATE
-===================================================== */
+
+   /* FINAL STATE */
+
 #finalStateText {
     white-space: pre-wrap;
     font-size: 13px;
@@ -383,9 +369,9 @@ button:hover {
     border: 1px solid var(--border);
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+
+   /* RESPONSIVE */
+
 @media (max-width: 1100px) {
     .matrix-section {
         grid-template-columns: 1fr;
@@ -406,25 +392,21 @@ button:hover {
     }
 }
 
-/* important if graph is SVG */
-/* svg {
-  min-width: 600px;
-  min-height: 400px;
-} */
 
 
-/* // input correction */
-/* ================= MATRIX SCROLL FIX ================= */
+
+
+ /* MATRIX SCROLL FIX  */
 
 .matrix-wrapper {
-    max-height: 420px;      /* controls vertical visibility */
+    max-height: 420px;     
     overflow: auto;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: white;
 }
 
-/* Table base */
+
 .matrix-wrapper table {
     border-collapse: separate;
     border-spacing: 0;
@@ -432,7 +414,7 @@ button:hover {
     min-width: 100%;
 }
 
-/* Header row (R1, R2, ...) */
+
 .matrix-wrapper th {
     position: sticky;
     top: 0;
@@ -441,14 +423,13 @@ button:hover {
     font-weight: 600;
 }
 
-/* First column (P1, P2, ...) */
+
 .matrix-wrapper th:first-child {
     left: 0;
     z-index: 3;
     background: #eef2f7;
 }
 
-/* First column cells */
 .matrix-wrapper td:first-child {
     position: sticky;
     left: 0;
@@ -456,7 +437,7 @@ button:hover {
     z-index: 1;
 }
 
-/* Input cells */
+
 .matrix-wrapper input {
     width: 42px;
     height: 34px;
@@ -465,7 +446,7 @@ button:hover {
     border: 1px solid #e0e0e0;
 }
 
-/* Improve focus visibility */
+
 .matrix-wrapper input:focus {
     outline: none;
     border-color: #2962ff;
@@ -476,10 +457,10 @@ button:hover {
 /* ================= CELL CONTEXT INDICATOR ================= */
 
 
-/* ================= CELL CONTEXT INDICATOR — TABLE LEVEL ================= */
+
 
 .cell-indicator {
-    position: sticky;        /* ✅ sticks to table top */
+    position: sticky;        /* sticks to table top */
     top: 0;
 
     z-index: 10;
@@ -507,18 +488,7 @@ button:hover {
 
 
 
-
-/* SVG should NOT shrink */
-/* .graph-scroll svg,
-.graph-modal-body svg {
-    min-width: max-content;
-} */
-
-/* =====================================================
-   GRAPH — FINAL (NORMAL + FULLSCREEN + ZOOM)
-===================================================== */
-
-/* ========== GRAPH CONTAINER (NORMAL VIEW) ========== */
+ /* GRAPH CONTAINER (NORMAL VIEW)  */
 
 .graph-container {
     display: block;
@@ -529,8 +499,8 @@ button:hover {
 /* The ONLY scroll container */
 .graph-scroll {
     width: 100%;
-    height: auto;                  /* ✅ shrink to content */
-    max-height: 700px;             /* ✅ fits p=20 (~600px) */
+    height: auto;                  
+    max-height: 700px;             /* fits p=20 (~600px) */
     overflow-x: auto;
     overflow-y: auto;
 
@@ -542,30 +512,30 @@ button:hover {
 /* Graph drawing area */
 #graphArea {
     width: 100%;
-    height: auto;                  /* 🔥 CRITICAL */
-    min-height: unset;             /* 🔥 remove forced height */
+    height: auto;                  
+    min-height: unset;             
 
-    padding: 16px;                 /* reduced padding */
+    padding: 16px;               
     border-radius: 20px;
     border: 2px dashed #e5e7eb;
     background: #f8fafc;
 
-    display: block;                /* 🔥 DO NOT center vertically */
-    overflow: visible;             /* keep as you want */
+    display: block;                
+    overflow: visible;            
 }
 
-/* SVG — SINGLE SOURCE OF SIZE */
+
 .graph-scroll svg {
     display: block;
     margin: 0 auto;
 
-    width: max-content;            /* prevents horizontal clipping */
-    height: auto;                  /* 🔥 SVG controls height */
+    width: max-content;           
+    height: auto;                  
     min-width: 900px;
 }
-/* =====================================================
-   FULLSCREEN GRAPH
-===================================================== */
+
+   /* FULLSCREEN GRAPH */
+
 
 .graph-modal {
     position: fixed;
@@ -591,7 +561,7 @@ button:hover {
     color: #ffffff;
 }
 
-/* Body (scrolls, NOT flex) */
+/* Body */
 .graph-modal-body {
     flex: 1;
 
@@ -613,9 +583,8 @@ button:hover {
 }
 
 
-/* =====================================================
-   ZOOM CONTROLS
-===================================================== */
+   /* ZOOM CONTROLS */
+
 
 .graph-zoom-control {
     display: flex;
@@ -631,15 +600,15 @@ button:hover {
     cursor: pointer;
 }
 
-/* ================= CELL INDICATOR (TABLE-LOCAL FIXED) ================= */
+ /* CELL INDICATOR (TABLE-LOCAL FIXED)  */
 
 .card {
-    position: relative; /* 🔥 REQUIRED anchor */
+    position: relative; 
 }
 
 .cell-indicator {
-    position: sticky;     /* ✅ fixed inside card */
-    top: 0;               /* stick to top of card */
+    position: sticky;     
+    top: 0;               
 
     z-index: 20;
 
@@ -654,7 +623,7 @@ button:hover {
 
     margin-bottom: 10px;
 
-    display: none;        /* shown only while editing */
+    display: none;        
 }
 
 .cell-indicator span {
@@ -665,12 +634,12 @@ button:hover {
 
 
 
-/* =====================================================
-   MOBILE IMPROVEMENTS (PHONES ONLY)
-===================================================== */
+
+   /* MOBILE IMPROVEMENTS  */
+
 @media (max-width: 768px) {
 
-    /* ---------- GLOBAL ---------- */
+    
     body {
         padding: 14px;
     }
@@ -688,19 +657,19 @@ button:hover {
         font-size: 16px;
     }
 
-    /* Prevent iOS zoom on focus */
+
     input,
     select,
     button {
         font-size: 16px;
     }
 
-    /* ---------- SYSTEM CONFIG ---------- */
+    
     .system-config {
         gap: 16px;
     }
 
-    /* ---------- MATRIX SECTION ---------- */
+    
     .matrix-section {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -715,21 +684,21 @@ button:hover {
         padding: 6px;
     }
 
-    /* Horizontal scroll for matrices */
+    
     .card > div[id$="Matrix"],
     #availableResources {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Matrix inputs (touch friendly) */
+   
     table input {
         width: 44px;
         height: 36px;
         font-size: 14px;
     }
 
-    /* ---------- ACTION BUTTONS ---------- */
+    
     .actions {
         flex-direction: column;
         gap: 14px;
@@ -740,7 +709,7 @@ button:hover {
         min-height: 48px;
     }
 
-    /* ---------- GRAPH ---------- */
+  
     .graph-scroll {
         max-height: 60vh;
         padding: 8px;
@@ -752,7 +721,7 @@ button:hover {
         padding: 10px;
     }
 
-    /* Graph usage hint */
+  
     #graphTitle::after {
         content: " (Use Fullscreen / Rotate Phone)";
         font-size: 12px;
@@ -765,7 +734,7 @@ button:hover {
         font-size: 14px;
     }
 
-    /* ---------- RECOVERY PANEL ---------- */
+ 
     .recovery-actions {
         flex-direction: column;
     }
@@ -774,7 +743,7 @@ button:hover {
         width: 100%;
     }
 
-    /* ---------- FINAL STATE ---------- */
+    
     #finalStateText {
         font-size: 12px;
         padding: 12px;

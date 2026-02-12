@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
 
-    <!-- ✅ CRITICAL FOR MOBILE -->
+    <!--  CRITICAL FOR MOBILE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Deadlock Detection & Recovery Simulator</title>
@@ -14,17 +14,15 @@
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- HEADER -->
 <header class="app-header">
     <h1>Deadlock Detection & Recovery Simulator</h1>
     <p>Operating Systems Concept</p>
 
-    <!-- <a href="Deadlock.pdf" target="_blank" class="theory-link">
-        📘 Learn Deadlock Theory
-    </a> -->
+   
 </header>
 
-<!-- ================= SYSTEM CONFIGURATION ================= -->
+<!-- SYSTEM CONFIGURATION  -->
 <section class="card">
     <h2>System Configuration</h2>
 
@@ -55,7 +53,7 @@
     </div>
 </section>
 
-<!-- ================= MATRIX SECTION ================= -->
+<!-- MATRIX SECTION -->
 <section class="matrix-section">
 
     <div class="card">
@@ -90,20 +88,20 @@
 
 </section>
 
-<!-- ================= MAIN ACTIONS ================= -->
+<!--MAIN ACTIONS  -->
 <section class="card actions">
     <button id="detectBtn">Detect Deadlock</button>
     <button id="resetBtn">Reset</button>
     <button id="exampleBtn">Example Input</button>
 </section>
 
-<!-- ================= RESULT PANEL ================= -->
+<!--RESULT PANEL -->
 <section class="card" id="resultPanel">
     <h3>Detection Result</h3>
     <p id="resultText">Waiting for input...</p>
 </section>
 
-<!-- ================= GRAPH LEGEND ================= -->
+<!-- GRAPH LEGEND -->
 <div id="graphLegend" class="graph-legend-inline" style="display:none;">
     <span><i class="legend-dot red"></i> Deadlock</span>
     <span><i class="legend-dot yellow"></i> Manual Waiting (Preempted)</span>
@@ -111,7 +109,7 @@
     <span><i class="legend-dot blue"></i> Running</span>
 </div>
 
-<!-- ================= GRAPH ================= -->
+<!--  GRAPH -->
 <div class="graph-container">
     <section class="card">
         <div class="graph-header">
@@ -123,7 +121,7 @@
 </div>
 
 
-        <!-- ✅ SCROLL WRAPPER -->
+        <!--  SCROLL WRAPPER -->
         <div class="graph-scroll">
             <div id="graphArea">Graph will appear here</div>
         </div>
@@ -132,9 +130,9 @@
     </section>
 </div>
 
- <!-- your existing SVG / canvas graph -->
 
-<!-- ================= DEADLOCK RECOVERY ================= -->
+
+<!--  DEADLOCK RECOVERY -->
 <section class="card deadlock-recovery">
     <h3>Deadlock Recovery</h3>
 
@@ -175,7 +173,7 @@
     </div>
 </section>
 
-<!-- ================= FINAL SYSTEM STATE ================= -->
+<!--FINAL SYSTEM STATE-->
 <section class="card">
     <h3>Final System State</h3>
     <pre id="finalStateText"></pre>
@@ -187,12 +185,12 @@
 </section>
 
 
-<!-- ================= SCRIPT ================= -->
+<!--  SCRIPT -->
 <script src="./script.js" defer></script>
 
 
 
-<!-- ================= GRAPH FULLSCREEN MODAL ================= -->
+<!--  GRAPH FULLSCREEN MODAL -->
 <div id="graphModal" class="graph-modal">
     <div class="graph-modal-header">
         <span>Graph (Fullscreen)</span>
