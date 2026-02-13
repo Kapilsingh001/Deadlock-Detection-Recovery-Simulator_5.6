@@ -365,6 +365,29 @@ function drawWaitForGraph(graph, cycle = []) {
    // SVG 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+    
+const defs = document.createElementNS(svg.namespaceURI,"defs");
+
+const marker = document.createElementNS(svg.namespaceURI,"marker");
+
+marker.setAttribute("id","arrowRequest");
+marker.setAttribute("viewBox","0 0 10 10");
+marker.setAttribute("refX","8");   // adjust arrow position
+marker.setAttribute("refY","5");
+marker.setAttribute("markerWidth","6");
+marker.setAttribute("markerHeight","6");
+marker.setAttribute("orient","auto-start-reverse");
+
+const path = document.createElementNS(svg.namespaceURI,"path");
+path.setAttribute("d","M 0 0 L 10 5 L 0 10 z");
+path.setAttribute("fill","context-stroke");// inherit stroke color
+
+marker.appendChild(path);
+defs.appendChild(marker);
+svg.appendChild(defs);
+
+
     svg.setAttribute("width", width);
     svg.style.display = "block";
     svg.style.margin = "auto";
@@ -423,10 +446,28 @@ function drawWaitForGraph(graph, cycle = []) {
             if (terminatedProcesses.has(to)) continue;
 
             const line = document.createElementNS(svg.namespaceURI, "line");
-            line.setAttribute("x1", positions[from].x);
-            line.setAttribute("y1", positions[from].y);
-            line.setAttribute("x2", positions[to].x);
-            line.setAttribute("y2", positions[to].y);
+            line.setAttribute("marker-end", "url(#arrowRequest)");
+
+            const dx = positions[to].x - positions[from].x;
+const dy = positions[to].y - positions[from].y;
+
+const length = Math.sqrt(dx*dx + dy*dy);
+
+// circle radius = 22 (your value)
+const offset = 22;
+
+const newX2 = positions[to].x - (dx / length) * offset;
+const newY2 = positions[to].y - (dy / length) * offset;
+
+line.setAttribute("x1", positions[from].x);
+line.setAttribute("y1", positions[from].y);
+line.setAttribute("x2", newX2);
+line.setAttribute("y2", newY2);
+
+
+            line.setAttribute("stroke-linecap","round");
+            line.setAttribute("stroke-linejoin","round");  
+
 
             if (cycle.includes(from) && cycle.includes(to)) {
                 line.setAttribute("stroke", "red");
@@ -1244,6 +1285,44 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
     //SVG 
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+    // Arrow Definitions
+const defs = document.createElementNS(svg.namespaceURI, "defs");
+
+// RED request arrow
+const markerRequest = document.createElementNS(svg.namespaceURI, "marker");
+markerRequest.setAttribute("id", "arrowRequest");
+markerRequest.setAttribute("markerWidth", "10");
+markerRequest.setAttribute("markerHeight", "10");
+markerRequest.setAttribute("refX", "10");
+markerRequest.setAttribute("refY", "3");
+markerRequest.setAttribute("orient", "auto");
+
+const pathReq = document.createElementNS(svg.namespaceURI, "path");
+pathReq.setAttribute("d", "M0,0 L0,6 L9,3 z");
+pathReq.setAttribute("fill", "#c62828");
+
+markerRequest.appendChild(pathReq);
+defs.appendChild(markerRequest);
+
+// GREEN allocation arrow
+const markerAlloc = document.createElementNS(svg.namespaceURI, "marker");
+markerAlloc.setAttribute("id", "arrowAllocation");
+markerAlloc.setAttribute("markerWidth", "10");
+markerAlloc.setAttribute("markerHeight", "10");
+markerAlloc.setAttribute("refX", "10");
+markerAlloc.setAttribute("refY", "3");
+markerAlloc.setAttribute("orient", "auto");
+
+const pathAlloc = document.createElementNS(svg.namespaceURI, "path");
+pathAlloc.setAttribute("d", "M0,0 L0,6 L9,3 z");
+pathAlloc.setAttribute("fill", "#2e7d32");
+
+markerAlloc.appendChild(pathAlloc);
+defs.appendChild(markerAlloc);
+
+svg.appendChild(defs);
+
     svg.setAttribute("width", width);
     svg.setAttribute("height", height);
     svg.style.display = "block";
@@ -1329,9 +1408,35 @@ function drawMultiInstanceGraph(depGraph, deadlockedProcesses = []) {
             line.setAttribute("y2", resourcePos[j].y - 20);
             line.setAttribute("stroke", "#c62828");
             line.setAttribute("stroke-width", "2");
+            line.setAttribute("marker-end", "url(#arrowRequest)");
+
             svg.appendChild(line);
         }
     }
+
+    
+const allocation = readMatrix(allocationDiv, p, r);
+
+for(let i=0;i<p;i++){
+  for(let j=0;j<r;j++){
+    if(allocation[i][j] > 0){
+
+      const allocLine = document.createElementNS(svg.namespaceURI,"line");
+
+      allocLine.setAttribute("x1", resourcePos[j].x);
+      allocLine.setAttribute("y1", resourcePos[j].y - 20);
+      allocLine.setAttribute("x2", processPos[i].x);
+      allocLine.setAttribute("y2", processPos[i].y + 20);
+
+      allocLine.setAttribute("stroke","#2e7d32");
+      allocLine.setAttribute("stroke-width","2");
+
+      allocLine.setAttribute("marker-end","url(#arrowAllocation)");
+
+      svg.appendChild(allocLine);
+    }
+  }
+}
 
     graphArea.appendChild(svg);
 

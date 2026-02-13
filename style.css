@@ -750,6 +750,23 @@ button:hover {
     }
 }
 
+/* // adding edges */
+.legend-line {
+    display:inline-block;
+    width:25px;
+    height:3px;
+    margin-right:6px;
+}
+
+.legend-line.request {
+    background:#c62828; 
+}
+
+.legend-line.allocation {
+    background:#2e7d32; 
+}
+
+
 
 #cloudLogs {
     max-height: 200px;
