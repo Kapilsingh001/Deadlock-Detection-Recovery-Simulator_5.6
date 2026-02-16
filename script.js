@@ -645,11 +645,15 @@ function handleDeadlockDetection() {
             available
         );
         lastDetectionResult = result;
+
+        if (!result.deadlock) {
+        waitingAuto.clear();
+    }
         
 
 
         // recompute auto-waiting ONLY if not restoring
-        if (!isRestoring) {
+        if (!isRestoring && result.deadlock) {
             waitingAuto.clear();
 
             for (let i = 0; i < p; i++) {
@@ -1049,23 +1053,31 @@ function updateSystemFinalState(result){
 
     output += "Process States:\n";
 
-    for(let i=0;i<p;i++){
-            if(terminatedProcesses.has(i)){
-                output+=formatProcess(i) + " → TERMINATED\n";
-            }else if (resourceModelSelect.value === "single" && waitingProcesses.has(i)) {
-        output += formatProcess(i)+ " → WAITING\n";
+   for(let i=0;i<p;i++){
+
+    if(terminatedProcesses.has(i)){
+        output += formatProcess(i) + " → TERMINATED\n";
+        continue;
+    }
+    else if (resourceModelSelect.value === "multiple" &&result.deadlock &&result.deadlockedProcesses.includes(i)) {
+        output += formatProcess(i) + " → WAITING (DEADLOCK)\n";
     }
     else if (waitingManual.has(i)) {
-        output +=formatProcess(i)+ " → WAITING (PREEMPTED)\n";
+        output += formatProcess(i) + " → WAITING (PREEMPTED)\n";
     }
     else if (waitingAuto.has(i)) {
         output += formatProcess(i) + " → WAITING (RESOURCE)\n";
     }
-
-        else {
-            output += formatProcess(i) + " → RUNNING\n";
-        }
+    else if (resourceModelSelect.value === "single" && waitingProcesses.has(i)) {
+        output += formatProcess(i) + " → WAITING\n";
     }
+    else {
+        output += formatProcess(i) + " → RUNNING\n";
+    }
+
+
+}
+
 
     // Available Resources
     output += "\nAvailable Resources:\n";
@@ -1135,32 +1147,26 @@ function rebuildTerminateDropdown(cycle) {
 // multiple instance correction
 // 1.
 function detectDeadlockMultipleInstance(allocation, request, available) {
+
     const p = allocation.length;
     const r = allocation[0].length;
 
     const work = [...available];
     const finish = new Array(p).fill(false);
 
-    // processes with zero allocation finish
-    for (let i = 0; i < p; i++) {
-        let hasAllocation = false;
-        for (let j = 0; j < r; j++) {
-            if (allocation[i][j] > 0) {
-                hasAllocation = true;
-                break;
-            }
-        }
-        if (!hasAllocation) finish[i] = true;
-    }
+    const safeSequence = [];
 
     let progress;
+
     do {
         progress = false;
 
         for (let i = 0; i < p; i++) {
+
             if (finish[i]) continue;
 
             let canProceed = true;
+
             for (let j = 0; j < r; j++) {
                 if (request[i][j] > work[j]) {
                     canProceed = false;
@@ -1169,25 +1175,32 @@ function detectDeadlockMultipleInstance(allocation, request, available) {
             }
 
             if (canProceed) {
+
                 for (let j = 0; j < r; j++) {
                     work[j] += allocation[i][j];
                 }
+
                 finish[i] = true;
+                safeSequence.push(i);   
                 progress = true;
             }
         }
+
     } while (progress);
 
     const deadlocked = [];
+
     for (let i = 0; i < p; i++) {
         if (!finish[i]) deadlocked.push(i);
     }
 
     return {
         deadlock: deadlocked.length > 0,
-        deadlockedProcesses: deadlocked
+        deadlockedProcesses: deadlocked,
+        safeSequence: safeSequence      
     };
 }
+
 
 // 2.
 function updateResultUIMultiple(result) {
@@ -1228,10 +1241,18 @@ function updateResultUIMultiple(result) {
 
     resultPanel.classList.add("safe");
 
+    const seq = result.safeSequence
+    .map(p => formatProcess(p))
+    .join(" → ");
+
     resultText.innerHTML = `
         <strong>SAFE STATE</strong><br><br>
-        All process requests can be satisfied.
+        All process requests can be satisfied.<br><br>
+
+        <strong>SAFE SEQUENCE:</strong><br>
+        ${seq}
     `;
+
 }
 
 
