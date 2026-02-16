@@ -1033,87 +1033,103 @@ function writeAvailable(container, available) {
 
 // final system state
 
-function updateSystemFinalState(result){
+function updateSystemFinalState(result) {
 
-    const p=parseInt(processInput.value);
-    const r=parseInt(resourceInput.value);
+    if (!result) return;
 
-    const available=readAvailable(availableDiv,r);
-    const finalText=document.getElementById("finalStateText");
+    const p = parseInt(processInput.value);
+    const r = parseInt(resourceInput.value);
+    const mode = resourceModelSelect.value;
+
+    const available = readAvailable(availableDiv, r);
+    const finalText = document.getElementById("finalStateText");
 
     let output = "";
-    //system state
 
-    if(result.deadlock){
-        output += "System Status: DEADLOCK EXISTS\n\n";
-    }else{
-         output += "System Status: SAFE\n\n";
-    }
-    //process state
+    // ===== SYSTEM STATUS =====
+    output += result.deadlock
+        ? "System Status: DEADLOCK EXISTS\n\n"
+        : "System Status: SAFE\n\n";
 
+    // ===== PROCESS STATES =====
     output += "Process States:\n";
 
-   for(let i=0;i<p;i++){
+    for (let i = 0; i < p; i++) {
 
-    if(terminatedProcesses.has(i)){
-        output += formatProcess(i) + " → TERMINATED\n";
-        continue;
-    }
-    else if (resourceModelSelect.value === "multiple" &&result.deadlock &&result.deadlockedProcesses.includes(i)) {
-        output += formatProcess(i) + " → WAITING (DEADLOCK)\n";
-    }
-    else if (waitingManual.has(i)) {
-        output += formatProcess(i) + " → WAITING (PREEMPTED)\n";
-    }
-    else if (waitingAuto.has(i)) {
-        output += formatProcess(i) + " → WAITING (RESOURCE)\n";
-    }
-    else if (resourceModelSelect.value === "single" && waitingProcesses.has(i)) {
-        output += formatProcess(i) + " → WAITING\n";
-    }
-    else {
-        output += formatProcess(i) + " → RUNNING\n";
+        let state = "RUNNING";
+
+        if (terminatedProcesses.has(i)) {
+
+            state = "TERMINATED";
+
+        }
+        else if (
+            mode === "multiple" &&
+            result.deadlock &&
+            result.deadlockedProcesses?.includes(i)
+        ) {
+
+            state = "WAITING (DEADLOCK)";
+
+        }
+        else if (
+            mode === "single" &&
+            result.deadlock &&
+            result.cycle?.includes(i)
+        ) {
+
+            state = "WAITING (DEADLOCK)";
+
+        }
+        else if (waitingManual.has(i)) {
+
+            state = "WAITING (PREEMPTED)";
+
+        }
+        else if (waitingAuto.has(i)) {
+
+            state = "WAITING (RESOURCE SHORTAGE)";
+
+        }
+        else if (mode === "single" && waitingProcesses.has(i)) {
+
+            state = "WAITING";
+
+        }
+
+        output += `${formatProcess(i)} → ${state}\n`;
     }
 
-
-}
-
-
-    // Available Resources
+    // ===== AVAILABLE RESOURCES =====
     output += "\nAvailable Resources:\n";
 
-    for(let j=0;j<r;j++){
-        output+="R"+(j+1)+" = "+available[j];
-        
+    for (let j = 0; j < r; j++) {
+        output += `R${j+1} = ${available[j]}`;
         if (j < r - 1) output += ", ";
     }
 
+    // ===== RECOVERY ACTIONS =====
+    output += "\n\nRecovery Actions:\n";
 
-output += "\n\nRecovery Actions:\n";
+    if (result.deadlock) {
+        output += "• Deadlock detected\n";
+    }
 
-if (result.deadlock) {
-    output += "• Deadlock detected\n";
+    terminatedProcesses.forEach(p => {
+        output += `• ${formatProcess(p)} terminated\n`;
+    });
+
+    waitingProcesses.forEach(p => {
+        output += `• ${formatProcess(p)} preempted\n`;
+    });
+
+    waitingManual.forEach(p => {
+        output += `• ${formatProcess(p)} preempted (manual)\n`;
+    });
+
+    finalText.innerText = output;
 }
 
-// Terminations
-for (let p of terminatedProcesses) {
-    output += "• " + formatProcess(p) + " terminated\n";
-}
-
-// Preemptions (SINGLE instance)
-for (let p of waitingProcesses) {
-    output += "• " + formatProcess(p) + " preempted\n";
-}
-
-// Preemptions (MULTIPLE instance – manual)
-for (let p of waitingManual) {
-    output += "• " + formatProcess(p)+ " preempted (manual)\n";
-}
-
-
-finalText.innerText = output;
-
-}
 
 // Extra
 
